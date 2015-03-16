@@ -5,8 +5,6 @@
 Configuration
 '''
 
-__author__ = 'HE Guilin'
-
 import config_default
 
 class Dict(dict):

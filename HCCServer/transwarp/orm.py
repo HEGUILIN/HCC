@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__author__ = 'HE Guilin'
-
 '''
 Database operation module. This module is independent with web module.
 '''

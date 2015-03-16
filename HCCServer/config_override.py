@@ -5,7 +5,6 @@
 Override configurations.
 '''
 
-__author__ = 'HE Guilin'
 
 configs = {
     'db': {
