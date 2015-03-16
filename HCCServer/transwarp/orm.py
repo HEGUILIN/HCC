@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+__author__ = 'Michael Liao'
+
 '''
 Database operation module. This module is independent with web module.
 '''
