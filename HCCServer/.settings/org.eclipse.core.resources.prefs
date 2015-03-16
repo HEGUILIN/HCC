@@ -1,0 +1,12 @@
+eclipse.preferences.version=1
+encoding//transwarp/__init__.py=utf-8
+encoding//transwarp/db.py=utf-8
+encoding//transwarp/orm.py=utf-8
+encoding/Server.py=utf-8
+encoding/config.py=utf-8
+encoding/config_default.py=utf-8
+encoding/config_override.py=utf-8
+encoding/data.py=utf-8
+encoding/models.py=utf-8
+encoding/operate.py=utf-8
+encoding/test_db.py=utf-8
