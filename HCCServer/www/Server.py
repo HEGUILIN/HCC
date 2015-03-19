@@ -19,8 +19,8 @@ from config import configs
 import operate
 import data
 
-##db.create_engine(**configs.db)
-db.create_engine(user='root', password='password', database='hccdatabase')
+db.create_engine(**configs.db)
+##db.create_engine(user='root', password='password', database='hccdatabase')
 class MyTCPHandler(SocketServer.BaseRequestHandler):
     def handle(self):
         print 'a client enters'
@@ -30,22 +30,7 @@ class MyTCPHandler(SocketServer.BaseRequestHandler):
         print data2
         operation=data2['OPERATION']
         if operation=='Register':
-            u= User()
-            data2.pop('OPERATION')
-            for k,v in data2.iteritems():
-                u[k]=v
-            print u
-            if u.has_key("ADMIN")==False:
-                u["ADMIN"]=0
-            u.insert()
-            send_data={}
-            send_data['NAME']=data2['NAME']
-            send_data['OPERATION']='REGISTER'
-            send_data['RESULT']='SUCCESS'
-            send_data['ID']=u.id
-            send_data_string=json.dumps(send_data)
-            print send_data_string
-            self.request.sendall(send_data_string)
+            operate.deal_register(self,data2)
         ##self.request.sendall("Response from server...")
  
 if __name__=='__main__':
