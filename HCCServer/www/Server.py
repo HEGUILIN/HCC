@@ -31,7 +31,11 @@ class MyTCPHandler(SocketServer.BaseRequestHandler):
         operation=data2['OPERATION']
         if operation=='Register':
             operate.deal_register(self,data2)
-        ##self.request.sendall("Response from server...")
+        elif operation=='Login':
+            operate.deal_login(self,data2)
+        else:
+            d={'RESULT':'Not Recongnize'}
+            self.request.sendall(json.dumps(d))
  
 if __name__=='__main__':
     

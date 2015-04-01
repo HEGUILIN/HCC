@@ -5,8 +5,6 @@
 Override configurations.
 '''
 
-
-
 configs = {
     'db': {
         'host': '127.0.0.1',
@@ -14,4 +12,5 @@ configs = {
         'password': 'password',
     }
 }
+
 

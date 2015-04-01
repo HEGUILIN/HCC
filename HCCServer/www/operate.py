@@ -11,28 +11,14 @@ from transwarp import orm
 
 import json
 
-def deal_login(data):
-    username=data['username']
-    u=User.find_first('where name=?',username)
-    if u!=None:
-        upassword=u.password
-        if u.password==data['password']:
-            return 'loginsuccess'
-        else:
-            return 'passworderror'
-    else:
-        return 'nouser'
-    return
-
 def deal_register(tcphandler,data):
     u= User()
     data.pop('OPERATION')
     for k,v in data.iteritems():
-        u[k]=v
+        u[k.lower()]=v
     print u
-    if u.has_key("ADMIN")==False:
-        u["ADMIN"]=0
-            
+    if u.has_key("admin")==False:
+        u["admin"]=0
     try:
         u.insert()
         send_data={}
@@ -50,3 +36,26 @@ def deal_register(tcphandler,data):
         send_data_string=json.dumps(send_data)
         print send_data_string
         tcphandler.request.sendall(send_data_string)
+        
+def deal_login(tcphandler,data):
+    u= User()
+    data.pop('OPERATION')
+    for k,v in data.iteritems():
+        u[k.lower()]=v
+    print u
+    
+    list=u.find_by('where name=?',u.name)
+    if list!=[]:
+        send_data={}
+        send_data['NAME']=data['NAME']
+        send_data['OPERATION']='Login'
+        send_data['RESULT']='SUCCESS'
+    else:
+        send_data={}
+        send_data['NAME']=data['NAME']
+        send_data['OPERATION']='Login'
+        send_data['RESULT']='Failure'
+    
+    send_data_string=json.dumps(send_data)
+    print send_data_string
+    tcphandler.request.sendall(send_data_string)
