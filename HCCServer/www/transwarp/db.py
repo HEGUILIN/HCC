@@ -322,6 +322,7 @@ def _select(sql, first, *args):
     logging.info('SQL: %s, ARGS: %s' % (sql, args))
     try:
         cursor = _db_ctx.connection.cursor()
+        print sql, args
         cursor.execute(sql, args)
         if cursor.description:
             names = [x[0] for x in cursor.description]

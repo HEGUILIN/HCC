@@ -1,0 +1,7 @@
+2015-04-26 15:40:10,696 - logging - DEBUG - Hello boy, Debug - [WebServer.py:216]
+2015-04-26 15:40:10,697 - logging - INFO - Hello boy, Info - [WebServer.py:217]
+2015-04-26 16:00:22,885 - logging - INFO - heguilin2is to register - [WebServer.py:90]
+2015-04-26 16:00:22,901 - logging - INFO - heguilin2registered successfully - [WebServer.py:92]
+2015-04-26 20:16:56,426 - heguilin - INFO -  is to create new chatting room with beacon id = the nearest beacon id - [config.py:85]
+2015-04-26 20:18:43,782 - heguilin - INFO -  is to create new chatting room with beacon id = the nearest beacon id - [config.py:85]
+2015-04-26 20:18:43,812 - heguilin - INFO -  created new chatting room with beacon id = the nearest beacon id successfully - [config.py:85]

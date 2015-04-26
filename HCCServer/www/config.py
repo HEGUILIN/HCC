@@ -7,6 +7,8 @@ Configuration
 
 
 import config_default
+import logging
+import logging.handlers 
 
 class Dict(dict):
     '''
@@ -45,12 +47,47 @@ def toDict(d):
     return D
 
 configs = config_default.configs
-'''
+
 try:
     import config_override
     configs = merge(configs, config_override.configs)
 except ImportError:
     pass
-'''
+
 configs = toDict(configs)
 
+LOG_FILE = "../log/logging.txt"  
+handler = logging.handlers.RotatingFileHandler(LOG_FILE, maxBytes = 20*1024*1024, backupCount = 10);  
+fmt = "%(asctime)s - %(name)s - %(levelname)s - %(message)s - [%(filename)s:%(lineno)s]"  
+formatter = logging.Formatter(fmt);  
+handler.setFormatter(formatter);         
+  
+
+logger = logging.getLogger('logging');    
+logger.addHandler(handler);             
+logger.setLevel(logging.DEBUG)
+
+##ip='137.189.97.84'
+port=50000
+
+ip='0.0.0.0'
+
+def confLogger(name):
+    logger = logging.getLogger(name);    
+    logger.addHandler(handler);             
+    logger.setLevel(logging.DEBUG)
+    return logger
+
+def addLog(name,info):
+    logger_ = logging.getLogger(name);    
+    logger_.addHandler(handler);             
+    logger_.setLevel(logging.DEBUG)
+    logger_.info(info);  
+    return 
+
+def addError(name,info):
+    logger_ = logging.getLogger(name);    
+    logger_.addHandler(handler);             
+    logger_.setLevel(logging.DEBUG)
+    logger_.debug(info);  
+    return 

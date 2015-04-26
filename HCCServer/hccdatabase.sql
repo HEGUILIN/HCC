@@ -1,12 +1,14 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     3/16/2015 1:54:30 PM                         */
+/* Created on:     4/24/2015 10:30:38 PM                        */
 /*==============================================================*/
 
 
 drop table if exists GRAPHS;
 
 drop table if exists GROUP_CHAT;
+
+drop table if exists GROUP_MESSAGE;
 
 drop table if exists GS;
 
@@ -15,6 +17,8 @@ drop table if exists SENTENCES;
 drop table if exists US;
 
 drop table if exists USERS;
+
+drop table if exists U_G_C;
 
 /*==============================================================*/
 /* Table: GRAPHS                                                */
@@ -40,7 +44,6 @@ create table GRAPHS
 /*==============================================================*/
 create table GROUP_CHAT
 (
-   GROUP_CREATED_BY_ID  varchar(50) not null,
    GROUP_ID             varchar(50) not null,
    GROUP_CREATED_AT     decimal not null,
    GROUP_NAME           varchar(50),
@@ -49,14 +52,28 @@ create table GROUP_CHAT
 );
 
 /*==============================================================*/
+/* Table: GROUP_MESSAGE                                         */
+/*==============================================================*/
+create table GROUP_MESSAGE
+(
+   GM_ID                char(10) not null,
+   GROUP_ID             varchar(50),
+   SENTENCE_ID          varchar(50),
+   ID                   varchar(50),
+   GM_CREATED_AT        char(10),
+   primary key (GM_ID)
+);
+
+/*==============================================================*/
 /* Table: GS                                                    */
 /*==============================================================*/
 create table GS
 (
-   GRAPH_ID             varchar(50) not null,
-   SENTENCE_ID          varchar(50) not null,
+   GRAPH_ID             varchar(50),
+   SENTENCE_ID          varchar(50),
    GS_SEQUENCE          int,
-   primary key (GRAPH_ID, SENTENCE_ID)
+   GS_ID                varchar(50) not null,
+   primary key (GS_ID)
 );
 
 /*==============================================================*/
@@ -76,11 +93,12 @@ create table SENTENCES
 /*==============================================================*/
 create table US
 (
-   ID                   varchar(50) not null,
-   SENTENCE_ID          varchar(50) not null,
-   US_FREQUENCY         int not null,
-   US_CREATED_AT        decimal not null,
-   primary key (ID, SENTENCE_ID)
+   ID                   varchar(50),
+   SENTENCE_ID          varchar(50),
+   US_FREQUENCY         int,
+   US_CREATED_AT        decimal,
+   US_ID                varchar(50) not null,
+   primary key (US_ID)
 );
 
 /*==============================================================*/
@@ -102,8 +120,26 @@ create table USERS
    primary key (ID)
 );
 
-alter table GROUP_CHAT add constraint FK_RELATIONSHIP_7 foreign key (GROUP_CREATED_BY_ID)
+/*==============================================================*/
+/* Table: U_G_C                                                 */
+/*==============================================================*/
+create table U_G_C
+(
+   GROUP_ID             varchar(50),
+   ID                   varchar(50),
+   JOIN_TIME            decimal,
+   U_G_C_ID             varchar(50) not null,
+   primary key (U_G_C_ID)
+);
+
+alter table GROUP_MESSAGE add constraint FK_RELATIONSHIP_10 foreign key (ID)
       references USERS (ID) on delete restrict on update restrict;
+
+alter table GROUP_MESSAGE add constraint FK_RELATIONSHIP_8 foreign key (GROUP_ID)
+      references GROUP_CHAT (GROUP_ID) on delete restrict on update restrict;
+
+alter table GROUP_MESSAGE add constraint FK_RELATIONSHIP_9 foreign key (SENTENCE_ID)
+      references SENTENCES (SENTENCE_ID) on delete restrict on update restrict;
 
 alter table GS add constraint FK_RELATIONSHIP_4 foreign key (GRAPH_ID)
       references GRAPHS (GRAPH_ID) on delete restrict on update restrict;
@@ -116,4 +152,10 @@ alter table US add constraint FK_RELATIONSHIP_1 foreign key (ID)
 
 alter table US add constraint FK_RELATIONSHIP_2 foreign key (SENTENCE_ID)
       references SENTENCES (SENTENCE_ID) on delete restrict on update restrict;
+
+alter table U_G_C add constraint FK_RELATIONSHIP_6 foreign key (GROUP_ID)
+      references GROUP_CHAT (GROUP_ID) on delete restrict on update restrict;
+
+alter table U_G_C add constraint FK_RELATIONSHIP_7 foreign key (ID)
+      references USERS (ID) on delete restrict on update restrict;
 
