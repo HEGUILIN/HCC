@@ -1,7 +1,0 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.iems5722.GroupMap.LBSChatActivity" >
-    <item android:id="@+id/map" android:title="MAP"></item>
-    <item android:id="@+id/about" android:title="ABOUT"></item>
-
-</menu>
