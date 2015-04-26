@@ -11,27 +11,33 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
+
+import net.sf.json.JSONObject;
+
+import com.HCC.Controller.WebConnect;
+import com.HCC.Model.Teacher;
+import com.HCC.Utils.Memory;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class LoginInterface extends JFrame {
 
 	private JPanel contentPane;
-	private final JLabel lblEmail = new JLabel("Email:");
+	private final JLabel lblUsername = new JLabel("User name:");
 	private final JTextField textField = new JTextField();
-	private final JLabel lblPassword = new JLabel("Password:");
-	private final JPasswordField passwordField = new JPasswordField();
 	private final JLabel lblPassword_1 = new JLabel("Password:");
 	private final JPasswordField passwordField_1 = new JPasswordField();
-	private final JLabel lblPleaseConfirmThe = new JLabel("Please confirm the password:");
-	private final JPasswordField passwordField_2 = new JPasswordField();
 	private final JLabel lblNewLabel = new JLabel("");
 	private final JButton btnNewButton = new JButton("Login Now");
 	private final JLabel lblNoAccountRegister = new JLabel("No account? Register Now.");
 	private final JLabel lblForgetYourPassword = new JLabel("Forget your password? Find here.");
-
+	static LoginInterface frame=null;
 	/**
 	 * Launch the application.
 	 */
@@ -39,7 +45,7 @@ public class LoginInterface extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					LoginInterface frame = new LoginInterface();
+					frame = new LoginInterface();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -68,16 +74,12 @@ public class LoginInterface extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		lblEmail.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblEmail.setBounds(101, 62, 154, 34);
+		lblUsername.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblUsername.setBounds(101, 62, 154, 34);
 		
-		contentPane.add(lblEmail);
+		contentPane.add(lblUsername);
 		
 		contentPane.add(textField);
-		lblPassword.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPassword.setBounds(133, 123, 144, 34);
-		
-		contentPane.add(passwordField);
 		lblPassword_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblPassword_1.setBounds(101, 132, 154, 34);
 		
@@ -89,17 +91,6 @@ public class LoginInterface extends JFrame {
 		passwordField_1.setBounds(278, 132, 237, 34);
 		
 		contentPane.add(passwordField_1);
-		lblPleaseConfirmThe.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblPleaseConfirmThe.setBounds(0, 196, 255, 34);
-		
-		contentPane.add(lblPleaseConfirmThe);
-		passwordField_2.addPropertyChangeListener(new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-			}
-		});
-		passwordField_2.setBounds(278, 196, 237, 34);
-		
-		contentPane.add(passwordField_2);
 		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel.setBounds(530, 69, 133, 161);
@@ -108,14 +99,43 @@ public class LoginInterface extends JFrame {
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				String username=textField.getText();
+				if(username.equals("")){
+					lblNewLabel.setText("No user name");
+					return;
+				}
+				
+				String password=passwordField_1.getText();
+				if(password.equals("")){
+					lblNewLabel.setText("Password should not be null");
+					return;
+				}
+				
+				String result =new WebConnect().login(username, password);
+				
+				if(result.equals("login success")){
+					lblNewLabel.setText("Login Success");
+					
+					frame.setVisible(false);
+					
+					Teacher t=new Teacher();
+					t.setusername(username);
+					
+					Memory.writeTeacher(t);
+					OccasionChatInterface oci=new OccasionChatInterface();
+					oci.setVisible(true);
+				}
 			}
 		});
-		btnNewButton.setBounds(312, 256, 167, 40);
+		btnNewButton.setBounds(309, 240, 167, 40);
 		
 		contentPane.add(btnNewButton);
 		lblNoAccountRegister.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				frame.setVisible(false);
+				RegisterInterface ri=new RegisterInterface();
+				ri.setVisible(true);
 			}
 		});
 		lblNoAccountRegister.setHorizontalAlignment(SwingConstants.CENTER);
@@ -132,5 +152,4 @@ public class LoginInterface extends JFrame {
 		
 		contentPane.add(lblForgetYourPassword);
 	}
-
 }

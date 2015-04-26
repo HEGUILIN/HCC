@@ -27,8 +27,27 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
 import javax.swing.JPopupMenu;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javax.swing.JTextField;
+
+import com.HCC.Controller.WebConnect;
+import com.HCC.Model.GRAPH;
+import com.HCC.Model.Message;
+import com.HCC.Model.Sentence;
+import com.HCC.Model.Teacher;
+import com.HCC.Utils.Memory;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.LinkedList;
+import java.util.List;
 
 public class OccasionChatInterface extends JFrame {
 
@@ -54,6 +73,13 @@ public class OccasionChatInterface extends JFrame {
 	private final JMenuItem mntmSaveChattingRoom = new JMenuItem("Save Chatting Room");
 	private final JMenuItem mntmManageChattingRooms = new JMenuItem("Manage Chatting Rooms");
 	private final JMenuItem mntmManageStudentsLearning = new JMenuItem("Manage Students' Learning Progress");
+	private final JComboBox comboBox = new JComboBox();
+	private final JTextField textField = new JTextField();
+	private Object[] shows=null;
+	private final JMenuItem mntmRefreshChatMessages = new JMenuItem("Refresh Chatting Messages");
+	OccasionChatInterface frame_this;
+	CreateSentence cs=new CreateSentence();
+	ActionListener comboBox_al=null;
 	/**
 	 * Launch the application.
 	 */
@@ -63,6 +89,7 @@ public class OccasionChatInterface extends JFrame {
 				try {
 					OccasionChatInterface frame = new OccasionChatInterface();
 					frame.setVisible(true);
+					//initData();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -74,9 +101,23 @@ public class OccasionChatInterface extends JFrame {
 	 * Create the frame.
 	 */
 	public OccasionChatInterface() {
+		super();
 		initGUI();
+		initUser();
+		frame_this=this;
+		initGRAPH();
+		//cs.initGrid();
+	}
+	void initGRAPH(){
+		Memory.extractGRAPH();
+	};
+	void initUser(){
+		Teacher t=Memory.extractTeacher();
+	    lblStatement.setText(t.getusername());
+
 	}
 	private void initGUI() {
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1300, 1038);
 		
@@ -87,14 +128,40 @@ public class OccasionChatInterface extends JFrame {
 		mnFile.add(mntmSaveChattingRoom);
 		
 		mnFile.add(mntmSaveChattingRecord);
+		mntmRefreshChatMessages.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Memory.refreshGRAPH();
+				Memory.refreshSentence();
+				comboBoxInit();
+				cs.initGrid();
+			}
+		});
+		
+		mnFile.add(mntmRefreshChatMessages);
 		
 		mnFile.add(mntmExit);
 		
 		menuBar.add(mnView);
+		mntmControlInterface.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CreateChattingRoom ccr=new CreateChattingRoom();
+				ccr.setVisible(true);
+			}
+		});
 		
 		mnView.add(mntmControlInterface);
 		
 		mnView.add(mnManageSentences);
+		mntmCreateSentence.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("create sentence");
+				frame_this.setContentPane(cs);
+				frame_this.setBounds(cs.getBounds());
+				frame_this.revalidate();
+				frame_this.repaint();
+			}
+		});
 		
 		mnManageSentences.add(mntmCreateSentence);
 		
@@ -115,6 +182,28 @@ public class OccasionChatInterface extends JFrame {
 		
 		contentPane.add(scrollPane);
 		scrollPane.setViewportView(list);
+		btnSend.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String input=textField.getText();
+				if(input.equals("")){
+					
+				}else{
+					int index=comboBox.getSelectedIndex()-1;
+					System.out.println(index);
+					Message m=new Message();
+					m.setImage("image5", "");
+					Sentence s=Sentence.sentences.get(index);
+					for(Sentence s1:Sentence.sentences){
+						System.out.println("ID"+s1.getGRAPH1_ID());
+					}
+					m.setImage(s);
+					
+					Message.messages.add(m);
+					initList();
+				}				
+			}
+		});
 		btnSend.setBounds(829, 767, 171, 144);
 		
 		contentPane.add(btnSend);
@@ -132,6 +221,71 @@ public class OccasionChatInterface extends JFrame {
 		lblCurrentRoomLocation.setBounds(999, 2, 279, 458);
 		
 		contentPane.add(lblCurrentRoomLocation);
+		comboBox.setBounds(49, 845, 733, 54);
+		
+		comboBoxInit();
+		
+		contentPane.add(comboBox);
+		
+		contentPane.add(textField);
+		
+		/*JLabel pingLabel = new JLabel("images/image1.jpg", JLabel.LEFT);
+		pingLabel.setIcon(new ImageIcon("images/image1.jpg"));
+		JPanel pingPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		pingPanel.add(pingLabel);
+		Object[] panels = {pingPanel};
+		list.setCellRenderer(new ImageListCellRenderer());
+		list.setListData(panels);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.setLayoutOrientation(JList.VERTICAL);
+		list.setFixedCellHeight(46);
+		*/
+		initList();
+		textField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		textField.setBounds(48, 785, 734, 62);
+		textField.setColumns(10);
+	}
+	private void initList(){
+		list.setCellRenderer(new ImageListCellRenderer());
+		ChatSlice.refreshChats();
+		shows=new Object[ChatSlice.chats.size()];
+		for(int i=0;i<ChatSlice.chats.size();i++){
+			shows[i]=ChatSlice.chats.get(i);
+		}
+		list.setListData(shows);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.setLayoutOrientation(JList.VERTICAL);
+		list.setFixedCellHeight(140);
+	}
+	private void comboBoxInit(){
+		if(comboBox_al!=null){
+			comboBox.removeActionListener(comboBox_al);
+			comboBox_al=null;
+		}
+		comboBox.removeAllItems();
+		comboBox.addItem("");
+		Memory.extractSENTENCE();
+		for(Sentence s:Sentence.sentences){
+			comboBox.addItem(s.getSENTENCE_DESCRIPTION());
+		}
+		comboBox_al=new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				textField.setText(comboBox.getSelectedItem().toString());
+			}
+			
+		};
+		comboBox.addActionListener(comboBox_al);
+	}
+	private void initData() {
+		// TODO Auto-generated method stub
+		comboBoxInit();
+		initList();
 	}
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
