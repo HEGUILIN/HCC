@@ -1,0 +1,75 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.iems5722.GroupMap.MainActivity" >
+
+    <RelativeLayout
+        android:id="@+id/toppanel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/mmtitle_bg"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/backbutton"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/selector_btn_back"
+            android:paddingLeft="10dp"
+            android:text="Back"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/district"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="LBS Chat"
+            android:textColor="#ffffff"
+            android:textSize="20.0sp" />
+    </RelativeLayout>
+    
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/sendpanel2"
+        android:layout_below="@+id/toppanel"
+        android:layout_alignLeft="@+id/sendpanel2"
+        android:stackFromBottom="true"
+		android:transcriptMode="normal" >
+
+    </ListView>
+    <RelativeLayout
+        android:id="@+id/sendpanel2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/layout_bg1" >
+
+        <Button
+            android:id="@+id/sendbutton2"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="Send" />
+
+        <EditText
+            android:id="@+id/sendcontent2"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/sendbutton2"
+            android:background="@drawable/edittext1"
+            android:singleLine="true"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

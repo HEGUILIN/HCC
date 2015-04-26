@@ -1,0 +1,45 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.iems5722.GroupMap.AboutActivity" >
+
+    <RelativeLayout
+        android:id="@+id/toppanel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/mmtitle_bg"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/backbutton"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/selector_btn_back"
+            android:paddingLeft="10dp"
+            android:text="Back"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/district"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="About"
+            android:textColor="#ffffff"
+            android:textSize="20.0sp" />
+    </RelativeLayout>
+    
+    <ListView
+	    android:id="@+id/aboutlist"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:stackFromBottom="true"
+		android:transcriptMode="normal"
+		android:layout_below="@+id/toppanel" >
+	</ListView>
+
+</RelativeLayout>

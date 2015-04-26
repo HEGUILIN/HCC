@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.iems5722.GroupMap.MainActivity" >
+    <item android:id="@+id/name" android:title="NAME">
+    </item>
+    <item android:id="@+id/group" android:title="GROUP"></item>
+    <item android:id="@+id/lbs" android:title="LBS"></item>
+    <item android:id="@+id/about" android:title="ABOUT"></item>
+
+</menu>

@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.iems5722.GroupMap.MainActivity" >
+
+    <com.amap.api.maps.MapView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" 
+        android:layout_above="@+id/sendpanel">
+    </com.amap.api.maps.MapView>
+    
+    <RelativeLayout
+        android:id="@+id/sendpanel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/layout_bg1" >
+
+        <Button
+            android:id="@+id/sendbutton"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:text="Send" />
+
+        <EditText
+            android:id="@+id/sendcontent"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/sendbutton"
+            android:background="@drawable/edittext1"
+            android:singleLine="true"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+</RelativeLayout>
